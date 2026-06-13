@@ -95,3 +95,9 @@ rotation = 1.5707964
 [node name="Obstacle21" parent="Walls" unique_id=502714676 groups=["nav_group"] instance=ExtResource("5_vah2e")]
 position = Vector2(-52, 350)
 rotation = 1.5707964
+
+[node name="Blob2" parent="." unique_id=1960601162 instance=ExtResource("2_0gq6p")]
+position = Vector2(113, 137)
+
+[node name="Blob3" parent="." unique_id=1932634390 instance=ExtResource("2_0gq6p")]
+position = Vector2(302, -179)

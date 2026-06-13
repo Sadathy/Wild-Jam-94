@@ -12,6 +12,7 @@ collide_with_areas = true
 script = ExtResource("1_2u3ln")
 
 [node name="Line" type="Line2D" parent="." unique_id=658442612]
+visible = false
 points = PackedVector2Array(0, 0, 0, 0)
 width = 2.0
 gradient = SubResource("Gradient_2u3ln")

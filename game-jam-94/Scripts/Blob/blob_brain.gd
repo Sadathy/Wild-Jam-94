@@ -10,35 +10,38 @@ var target_location: Vector2 = Vector2.ZERO
 
 @onready var eyes: Node2D = %Eyes
 
+
 func _ready() -> void:
 	TASK_SEEK.reached_goal.connect(on_finish_seek)
+
 
 #func _unhandled_input(event: InputEvent) -> void:
 	#if event is InputEventMouseButton and Input.is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
 		#target_location = BODY.get_global_mouse_position()
 		#TASK_MANAGER.new_task(TASK_SEEK)
 
+
 func on_finish_seek() -> void:
 	TASK_MANAGER.new_task(TASK_IDLE)
-	
+
+
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("think"):
 		on_think()
-		
+
+
 func on_think() -> void:
 	if TASK_MANAGER.current_task != TASK_IDLE:
 		return
-	var eye_data = eyes.read_eye_beams()
+	
+	var visible = eyes.get_visible_things()
 	var food_options = []
 	var unblocked_options = []
+	
 	# Search our eye beams for any food
-	for eye in eye_data:
-		var in_vision = eye_data[eye]["in_vision"]
-		if in_vision != null:
-			if in_vision.is_in_group("food"):
-				food_options.append(eye_data[eye]["in_vision"])
-		else:
-			unblocked_options.append(eye_data[eye]["direction"])
+	for thing in visible:
+		if thing.is_in_group("food"): food_options.append(thing)
+	
 	# If we found food, pick a random food and path towards it. Otherwise path in a random unblocked direction if we can.
 	if food_options.size() > 0:
 		print("Found at least one food")

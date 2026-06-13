@@ -1,0 +1,128 @@
+diff --git a/game-jam-94/Scripts/Blob/blob_brain.gd b/game-jam-94/Scripts/Blob/blob_brain.gd
+index b931d68..a07bd5c 100644
+--- a/game-jam-94/Scripts/Blob/blob_brain.gd
++++ b/game-jam-94/Scripts/Blob/blob_brain.gd
+@@ -10,35 +10,38 @@ var target_location: Vector2 = Vector2.ZERO
+ 
+ @onready var eyes: Node2D = %Eyes
+ 
++
+ func _ready() -> void:
+ 	TASK_SEEK.reached_goal.connect(on_finish_seek)
+ 
++
+ #func _unhandled_input(event: InputEvent) -> void:
+ 	#if event is InputEventMouseButton and Input.is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
+ 		#target_location = BODY.get_global_mouse_position()
+ 		#TASK_MANAGER.new_task(TASK_SEEK)
+ 
++
+ func on_finish_seek() -> void:
+ 	TASK_MANAGER.new_task(TASK_IDLE)
+-	
++
++
+ func _physics_process(delta: float) -> void:
+ 	if Input.is_action_just_pressed("think"):
+ 		on_think()
+-		
++
++
+ func on_think() -> void:
+ 	if TASK_MANAGER.current_task != TASK_IDLE:
+ 		return
+-	var eye_data = eyes.read_eye_beams()
++	
++	var visible = eyes.get_visible_things()
+ 	var food_options = []
+ 	var unblocked_options = []
++	
+ 	# Search our eye beams for any food
+-	for eye in eye_data:
+-		var in_vision = eye_data[eye]["in_vision"]
+-		if in_vision != null:
+-			if in_vision.is_in_group("food"):
+-				food_options.append(eye_data[eye]["in_vision"])
+-		else:
+-			unblocked_options.append(eye_data[eye]["direction"])
++	for thing in visible:
++		if thing.is_in_group("food"): food_options.append(thing)
++	
+ 	# If we found food, pick a random food and path towards it. Otherwise path in a random unblocked direction if we can.
+ 	if food_options.size() > 0:
+ 		print("Found at least one food")
+diff --git a/game-jam-94/Scripts/Mutations/Eyes/eyes.gd b/game-jam-94/Scripts/Mutations/Eyes/eyes.gd
+index 150d559..dbaba7c 100644
+--- a/game-jam-94/Scripts/Mutations/Eyes/eyes.gd
++++ b/game-jam-94/Scripts/Mutations/Eyes/eyes.gd
+@@ -2,33 +2,42 @@ extends Node2D
+ 
+ @export var SIGHT_RANGE: float = 400.0
+ 
+-const BEAM_COUNT: int = 16
+-const EYE_BEAM = preload("uid://fwjwh0yjcmg0")
+-
+-var eye_data: Dictionary = {}
+ 
+ func _ready() -> void:
+-	construct_eye_beams()
+-	read_eye_beams()
+-
+-func construct_eye_beams() -> void:
+-	for i in BEAM_COUNT:
+-		var new_beam = EYE_BEAM.instantiate()
+-		var direction = Vector2.from_angle((TAU/BEAM_COUNT) * i)
+-		new_beam.target_position = direction * SIGHT_RANGE
+-		new_beam.sight_range = SIGHT_RANGE
+-		eye_data[i] = {
+-			"eye_beam": new_beam,
+-			"direction": direction
+-		}
+-		add_child(new_beam)
+-
+-func read_eye_beams() -> Dictionary:
+-	var return_data = {}
+-	for i in BEAM_COUNT:
+-		var reading_eye = eye_data[i]["eye_beam"]
+-		return_data[i] = {
+-			"in_vision": reading_eye.in_vision,
+-			"direction": eye_data[i]["direction"]
+-			}
+-	return return_data
++	pass
++
++
++# Get all things our eyes can see
++func get_visible_things() -> Array:
++	var space := get_world_2d().direct_space_state
++	var hits := _find_objects_radius(space)
++	var visible := []
++	
++	for hit in hits:
++		var target = hit.collider
++		if _has_los(target.global_position, space):
++			visible.append(target)
++	
++	return visible
++
++
++# Find all objects visible in a circular radius
++func _find_objects_radius(space: PhysicsDirectSpaceState2D) -> Array[Dictionary]:
++	var vision_shape := CircleShape2D.new()
++	vision_shape.radius = SIGHT_RANGE
++	
++	var vision_query := PhysicsShapeQueryParameters2D.new()
++	vision_query.shape = vision_shape
++	vision_query.transform = global_transform
++	vision_query.collide_with_areas = true
++	
++	return space.intersect_shape(vision_query)
++
++
++# Check if eyes have clear line-of-sight to a target
++func _has_los(target: Vector2, space: PhysicsDirectSpaceState2D) -> bool:
++	var ray := PhysicsRayQueryParameters2D.create(global_position, target)
++	ray.exclude = [get_parent()]
++	
++	var result := space.intersect_ray(ray)
++	return result.is_empty()

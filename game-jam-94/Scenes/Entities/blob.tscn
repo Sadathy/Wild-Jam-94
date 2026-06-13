@@ -1,12 +1,26 @@
 [gd_scene format=3 uid="uid://bh3fmnuhxlr7a"]
 
-[ext_resource type="Texture2D" uid="uid://d3dtu3x0jyc4u" path="res://icon.svg" id="1_148xd"]
 [ext_resource type="Script" uid="uid://3gxs8fp3si1g" path="res://Scripts/Blob/blob.gd" id="1_j6l44"]
+[ext_resource type="Shader" uid="uid://cin4qbkqwejuy" path="res://Scenes/Entities/blob_base.gdshader" id="2_s6of7"]
 [ext_resource type="Script" uid="uid://b3w6d5pi6qsde" path="res://Scripts/Blob/Tasks/blob_task_manager.gd" id="3_nqy3g"]
+[ext_resource type="Texture2D" uid="uid://c7fpegmiqk818" path="res://Assets/Blob/Blob_Base.png" id="3_oc1qy"]
 [ext_resource type="Script" uid="uid://bmhrpuyvewc4b" path="res://Scripts/Blob/blob_brain.gd" id="3_vofcw"]
 [ext_resource type="Script" uid="uid://d1fm7f671y7ll" path="res://Scripts/Blob/Tasks/task_seek.gd" id="5_2arvm"]
 [ext_resource type="Script" uid="uid://c4yit2v0mvm3r" path="res://Scripts/Blob/Tasks/task_idle.gd" id="6_h5kcp"]
 [ext_resource type="PackedScene" uid="uid://ce2525wmd1qdw" path="res://Scenes/Mutations/Eyes/eyes.tscn" id="7_b7hkt"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6gmyd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3sqwr"]
+shader = ExtResource("2_s6of7")
+shader_parameter/noise = SubResource("NoiseTexture2D_6gmyd")
+shader_parameter/wave_frequency = 20.0
+shader_parameter/wave_speed = 1.0000000475
+shader_parameter/wave_amplitude = 0.025
+shader_parameter/distortion_strength = 0.02
+shader_parameter/colour_r = 0.40000000596048
+shader_parameter/colour_g = 0.40000000596048
+shader_parameter/colour_b = 0.80000001192096
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_148xd"]
 radius = 21.0
@@ -16,8 +30,11 @@ collision_mask = 3
 script = ExtResource("1_j6l44")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1142046645]
-scale = Vector2(0.35, 0.35)
-texture = ExtResource("1_148xd")
+material = SubResource("ShaderMaterial_3sqwr")
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_oc1qy")
+region_enabled = true
+region_rect = Rect2(-50, -50, 600, 600)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=859144262]
 shape = SubResource("CircleShape2D_148xd")

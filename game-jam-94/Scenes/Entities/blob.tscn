@@ -2,15 +2,16 @@
 
 [ext_resource type="Texture2D" uid="uid://d3dtu3x0jyc4u" path="res://icon.svg" id="1_148xd"]
 [ext_resource type="Script" uid="uid://3gxs8fp3si1g" path="res://Scripts/Blob/blob.gd" id="1_j6l44"]
-[ext_resource type="Script" uid="uid://b3w6d5pi6qsde" path="res://Scenes/Entities/blob_task_manager.gd" id="3_nqy3g"]
-[ext_resource type="Script" uid="uid://bmhrpuyvewc4b" path="res://Scenes/Entities/blob_brain.gd" id="3_vofcw"]
-[ext_resource type="Script" uid="uid://d1fm7f671y7ll" path="res://Scenes/Entities/task_seek.gd" id="5_2arvm"]
-[ext_resource type="Script" uid="uid://c4yit2v0mvm3r" path="res://Scenes/Entities/task_idle.gd" id="6_h5kcp"]
+[ext_resource type="Script" uid="uid://b3w6d5pi6qsde" path="res://Scripts/Blob/Tasks/blob_task_manager.gd" id="3_nqy3g"]
+[ext_resource type="Script" uid="uid://bmhrpuyvewc4b" path="res://Scripts/Blob/blob_brain.gd" id="3_vofcw"]
+[ext_resource type="Script" uid="uid://d1fm7f671y7ll" path="res://Scripts/Blob/Tasks/task_seek.gd" id="5_2arvm"]
+[ext_resource type="Script" uid="uid://c4yit2v0mvm3r" path="res://Scripts/Blob/Tasks/task_idle.gd" id="6_h5kcp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_148xd"]
 radius = 21.0
 
 [node name="Blob" type="CharacterBody2D" unique_id=420744747]
+collision_mask = 3
 script = ExtResource("1_j6l44")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1142046645]
@@ -20,9 +21,10 @@ texture = ExtResource("1_148xd")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=859144262]
 shape = SubResource("CircleShape2D_148xd")
 
-[node name="Blob_Brain" type="Node" parent="." unique_id=862591359 node_paths=PackedStringArray("TASK_SEEK", "BODY", "TASK_MANAGER")]
+[node name="Blob_Brain" type="Node" parent="." unique_id=862591359 node_paths=PackedStringArray("TASK_SEEK", "TASK_IDLE", "BODY", "TASK_MANAGER")]
 script = ExtResource("3_vofcw")
 TASK_SEEK = NodePath("Blob_TaskManager/Task_Seek")
+TASK_IDLE = NodePath("Blob_TaskManager/Task_Idle")
 BODY = NodePath("..")
 TASK_MANAGER = NodePath("Blob_TaskManager")
 
@@ -32,10 +34,9 @@ DEFAULT_TASK = NodePath("Task_Idle")
 BRAIN = NodePath("..")
 BODY = NodePath("../..")
 
-[node name="Task_Seek" type="Node" parent="Blob_Brain/Blob_TaskManager" unique_id=1333776106 node_paths=PackedStringArray("NAV", "TASK_IDLE", "TASK_MANAGER")]
+[node name="Task_Seek" type="Node" parent="Blob_Brain/Blob_TaskManager" unique_id=1333776106 node_paths=PackedStringArray("NAV", "TASK_MANAGER")]
 script = ExtResource("5_2arvm")
 NAV = NodePath("../../../BlobNavigation")
-TASK_IDLE = NodePath("../Task_Idle")
 TASK_MANAGER = NodePath("..")
 
 [node name="Task_Idle" type="Node" parent="Blob_Brain/Blob_TaskManager" unique_id=1633952990 node_paths=PackedStringArray("TASK_MANAGER")]

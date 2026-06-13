@@ -56,6 +56,11 @@ left={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="blobs"
+2d_physics/layer_2="obstacles"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

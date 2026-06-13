@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cfnxsmoallxeb"]
+
+[ext_resource type="Script" uid="uid://cuiywd3ufuxvn" path="res://Scripts/Tank/tank.gd" id="1_ajsg1"]
+[ext_resource type="PackedScene" uid="uid://bh3fmnuhxlr7a" path="res://Scenes/Entities/blob.tscn" id="2_0gq6p"]
+[ext_resource type="Script" uid="uid://it4uubx22416" path="res://Scripts/Tank/tank_camera.gd" id="2_v6vig"]
+
+[node name="Tank" type="Node2D" unique_id=843438757]
+script = ExtResource("1_ajsg1")
+
+[node name="TankBoundary" type="Polygon2D" parent="." unique_id=257606563]
+unique_name_in_owner = true
+color = Color(0.6311659, 0.585003, 0.8114471, 1)
+
+[node name="TankCamera" type="Camera2D" parent="." unique_id=1867870630]
+unique_name_in_owner = true
+limit_enabled = false
+script = ExtResource("2_v6vig")
+
+[node name="Blob" parent="." unique_id=420744747 instance=ExtResource("2_0gq6p")]
+position = Vector2(-22, -2)

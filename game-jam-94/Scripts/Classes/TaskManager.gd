@@ -16,8 +16,6 @@ func _ready() -> void:
 	current_task = DEFAULT_TASK
 	
 func new_task(next_task: Task) -> void:
-	print("Leaving task: ", current_task)
 	current_task.on_exit()
 	current_task = next_task
-	print("Entering task: ", current_task)
 	current_task.on_enter()

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://fwjwh0yjcmg0"]
+
+[ext_resource type="Script" uid="uid://dhoxmkh6dghwk" path="res://Scripts/Mutations/Eyes/eye_beam.gd" id="1_2u3ln"]
+
+[sub_resource type="Gradient" id="Gradient_2u3ln"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[node name="EyeBeam" type="RayCast2D" unique_id=602366715]
+collision_mask = 7
+collide_with_areas = true
+script = ExtResource("1_2u3ln")
+
+[node name="Line" type="Line2D" parent="." unique_id=658442612]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 2.0
+gradient = SubResource("Gradient_2u3ln")

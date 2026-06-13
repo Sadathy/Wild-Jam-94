@@ -1,7 +1,7 @@
 extends Node2D
 
-@export var MAX_X: float = 500
-@export var MIN_X: float = -500
+@export var MAX_X: float = 650
+@export var MIN_X: float = -650
 @export var MAX_Y: float = 350
 @export var MIN_Y: float = -350
 
@@ -24,10 +24,10 @@ func _ready() -> void:
 	tank_boundary.polygon = boundary_array
 	tank_boundary.uv = boundary_array
 	
-	tank_camera.MAX_X = MAX_Y
+	tank_camera.MAX_X = MAX_X
 	tank_camera.MIN_Y = MIN_Y
 	tank_camera.MIN_X = MIN_X
-	tank_camera.MAX_X = MAX_X
+	tank_camera.MAX_Y = MAX_Y
 	
 func _physics_process(delta: float) -> void:
 	food_timer -= delta

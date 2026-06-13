@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bmhrpuyvewc4b" path="res://Scripts/Blob/blob_brain.gd" id="3_vofcw"]
 [ext_resource type="Script" uid="uid://d1fm7f671y7ll" path="res://Scripts/Blob/Tasks/task_seek.gd" id="5_2arvm"]
 [ext_resource type="Script" uid="uid://c4yit2v0mvm3r" path="res://Scripts/Blob/Tasks/task_idle.gd" id="6_h5kcp"]
+[ext_resource type="PackedScene" uid="uid://ce2525wmd1qdw" path="res://Scenes/Mutations/Eyes/eyes.tscn" id="7_b7hkt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_148xd"]
 radius = 21.0
@@ -45,3 +46,6 @@ TASK_MANAGER = NodePath("..")
 
 [node name="BlobNavigation" type="NavigationAgent2D" parent="." unique_id=876600931]
 debug_enabled = true
+
+[node name="Eyes" parent="." unique_id=1653391680 instance=ExtResource("7_b7hkt")]
+unique_name_in_owner = true

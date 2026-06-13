@@ -4,6 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://bh3fmnuhxlr7a" path="res://Scenes/Entities/blob.tscn" id="2_0gq6p"]
 [ext_resource type="Script" uid="uid://it4uubx22416" path="res://Scripts/Tank/tank_camera.gd" id="2_v6vig"]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_v6vig"]
+vertices = PackedVector2Array(630, 349, -630.0078, 349, -630.9922, -350, 630, -350)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-641, -360, 640, -360, 640, 359, -640, 359)])
+
 [node name="Tank" type="Node2D" unique_id=843438757]
 script = ExtResource("1_ajsg1")
 
@@ -18,3 +23,6 @@ script = ExtResource("2_v6vig")
 
 [node name="Blob" parent="." unique_id=420744747 instance=ExtResource("2_0gq6p")]
 position = Vector2(-22, -2)
+
+[node name="TankNavigationRegion" type="NavigationRegion2D" parent="." unique_id=415584656]
+navigation_polygon = SubResource("NavigationPolygon_v6vig")

@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://ce2525wmd1qdw"]
 
 [ext_resource type="Script" uid="uid://tsvbepmfs6le" path="res://Scripts/Mutations/Eyes/eyes.gd" id="1_dwkd0"]
-[ext_resource type="Texture2D" uid="uid://b0qufygm837pu" path="res://Assets/eye.png" id="2_dwkd0"]
+[ext_resource type="Texture2D" uid="uid://dwmostq8m7nb3" path="res://Assets/Blob/Blob_Eyes.png" id="2_dwkd0"]
 
 [node name="Eyes" type="Node2D" unique_id=1653391680]
 script = ExtResource("1_dwkd0")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=816228710]
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_dwkd0")

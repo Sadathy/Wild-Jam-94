@@ -87,3 +87,4 @@ debug_enabled = true
 
 [node name="Eyes" parent="." unique_id=1653391680 instance=ExtResource("7_b7hkt")]
 unique_name_in_owner = true
+position = Vector2(0, 6)

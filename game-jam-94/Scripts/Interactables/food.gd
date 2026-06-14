@@ -9,6 +9,5 @@ func _ready() -> void:
 	body_entered.connect(on_body_enter)
 	
 func on_body_enter(body: Node2D) -> void:
-	print("Detected body enter")
 	food_eaten.emit(body)
 	queue_free()

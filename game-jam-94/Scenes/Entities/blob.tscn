@@ -62,6 +62,7 @@ script = ExtResource("6_h5kcp")
 TASK_MANAGER = NodePath("..")
 
 [node name="BlobNavigation" type="NavigationAgent2D" parent="." unique_id=876600931]
+debug_enabled = true
 
 [node name="Eyes" parent="." unique_id=1653391680 instance=ExtResource("7_b7hkt")]
 unique_name_in_owner = true

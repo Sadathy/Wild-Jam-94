@@ -8,6 +8,7 @@ var target_location: Vector2 = Vector2.ZERO
 @export var MAX_WANDER_RANGE: float = 400
 @export var MIN_WANDER_RANGE: float = 150
 
+#STATS AND BEHAVIOUR
 @export var STATS: Dictionary = {
 	"boredom": 20,
 	"vigilance": 20,
@@ -63,7 +64,6 @@ func _physics_process(delta: float) -> void:
 		
 # This updates the visible objects dictionary
 func on_search() -> void:
-	print("Searched for objects")
 	var visible = []
 	if eyes != null:
 		visible = eyes.get_visible_things()
@@ -76,33 +76,45 @@ func on_search() -> void:
 	var obstacles = []
 	
 	for thing in visible:
-		if thing.is_in_group("food"): food.append(thing)
-		if thing.is_in_group("blobs") and thing != BODY: blobs.append(thing)
-		if thing.is_in_group("nav_group"): obstacles.append(thing)
+		if thing.is_in_group("food"):
+			food.append({
+				"object": thing,
+				"location": thing.position
+			})
+		if thing.is_in_group("blobs") and thing != BODY:
+			blobs.append({
+				"object": thing,
+				"location": thing.position
+			})
+			print(name, " saw a blob!")
+		if thing.is_in_group("nav_group"):
+			obstacles.append({
+				"object": thing,
+				"location": thing.position
+			})
 	
 	visible_objects = {
 		"food": food,
 		"blobs": blobs,
 		"obstacles": obstacles
 	}
-	print("Found: ", visible_objects)
 			
 
 func on_think() -> void:
 	# If we found food, pick a random food and path towards it. Otherwise, if we have found a blob path away from it. Otherwise path randomly.
 	if visible_objects["food"].size() > 0:
-		print("Found at least one food")
+		print(name, " is running towards food")
 		var chosen_food = visible_objects["food"].pick_random()
-		target_location = chosen_food.position
+		target_location = chosen_food["location"]
 		TASK_MANAGER.new_task(TASK_SEEK)
 	elif visible_objects["blobs"].size() > 0:
-		print("Found at least one blob")
+		print(name, " is running from a blob")
 		var chosen_blob = visible_objects["blobs"].pick_random()
-		var chosen_dir = (BODY.position - chosen_blob.position).normalized()
+		var chosen_dir = (BODY.position - chosen_blob["location"]).normalized()
 		target_location = BODY.position + (chosen_dir * randf_range(MIN_WANDER_RANGE, MAX_WANDER_RANGE))
 		TASK_MANAGER.new_task(TASK_SEEK)
 	else:
-		print("Resorting to wandering in a random direction")
+		print(name, " is resorting to wandering in a random direction")
 		var chosen_dir = Vector2.from_angle(randf_range(-PI, PI))
 		target_location = BODY.position + (chosen_dir * randf_range(MIN_WANDER_RANGE, MAX_WANDER_RANGE))
 		TASK_MANAGER.new_task(TASK_SEEK)

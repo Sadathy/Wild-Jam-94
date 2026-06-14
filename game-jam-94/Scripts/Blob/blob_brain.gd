@@ -8,11 +8,27 @@ var target_location: Vector2 = Vector2.ZERO
 @export var MAX_WANDER_RANGE: float = 400
 @export var MIN_WANDER_RANGE: float = 150
 
+@export var STATS: Dictionary = {
+	"boredom": 20,
+	"intelligence": 100,
+	"toughness": 50,
+	"strength": 45,
+	"speed": 100
+}
+
+var current_boredom: float = 0
+var boredom_factor: float = 10
+@export var BOREDOM_VARIANCE: float = 20
+
 @onready var eyes: Node2D = %Eyes
 
 
 func _ready() -> void:
 	TASK_SEEK.reached_goal.connect(on_finish_seek)
+	print("Stat report for ", name, ":")
+	for key in STATS:
+		STATS[key] = randi_range(20, 100)
+		print(key, ": ", STATS[key])
 
 
 #func _unhandled_input(event: InputEvent) -> void:
@@ -26,7 +42,10 @@ func on_finish_seek() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("think"):
+	current_boredom += delta * boredom_factor
+	if current_boredom > STATS["boredom"]:
+		current_boredom -= STATS["boredom"]
+		boredom_factor = randf_range(BOREDOM_VARIANCE * 0.5, BOREDOM_VARIANCE * 1.5)
 		on_think()
 
 

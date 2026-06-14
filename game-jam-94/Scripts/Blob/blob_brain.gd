@@ -26,6 +26,8 @@ var boredom_factor: float = 10
 var current_vigilance: float = 0
 var vigilance_factor: float = 10
 
+var mutations: Array[Mutation] = []
+
 @export var BOREDOM_VARIANCE: float = 20
 @export var VIGILANCE_VARIANCE: float = 20
 
@@ -38,6 +40,8 @@ func _ready() -> void:
 	for key in STATS:
 		STATS[key] = randi_range(20, 100)
 		print(key, ": ", STATS[key])
+	
+	mutations.append(eyes)
 
 
 #func _unhandled_input(event: InputEvent) -> void:
@@ -61,60 +65,13 @@ func _physics_process(delta: float) -> void:
 		current_vigilance -= STATS["vigilance"]
 		vigilance_factor = randf_range(VIGILANCE_VARIANCE * 0.5, VIGILANCE_VARIANCE * 1.5)
 		on_search()
-		
-# This updates the visible objects dictionary
+
+
 func on_search() -> void:
-	var visible = []
-	if eyes != null:
-		visible = eyes.get_visible_things()
-	else:
-		for key in visible_objects:
-			visible_objects[key] = []
-		return
-	var food = []
-	var blobs = []
-	var obstacles = []
-	
-	for thing in visible:
-		if thing.is_in_group("food"):
-			food.append({
-				"object": thing,
-				"location": thing.position
-			})
-		if thing.is_in_group("blobs") and thing != BODY:
-			blobs.append({
-				"object": thing,
-				"location": thing.position
-			})
-			print(name, " saw a blob!")
-		if thing.is_in_group("nav_group"):
-			obstacles.append({
-				"object": thing,
-				"location": thing.position
-			})
-	
-	visible_objects = {
-		"food": food,
-		"blobs": blobs,
-		"obstacles": obstacles
-	}
-			
+	for mutation in mutations:
+		mutation.brain_search(self)
+
 
 func on_think() -> void:
-	# If we found food, pick a random food and path towards it. Otherwise, if we have found a blob path away from it. Otherwise path randomly.
-	if visible_objects["food"].size() > 0:
-		print(name, " is running towards food")
-		var chosen_food = visible_objects["food"].pick_random()
-		target_location = chosen_food["location"]
-		TASK_MANAGER.new_task(TASK_SEEK)
-	elif visible_objects["blobs"].size() > 0:
-		print(name, " is running from a blob")
-		var chosen_blob = visible_objects["blobs"].pick_random()
-		var chosen_dir = (BODY.position - chosen_blob["location"]).normalized()
-		target_location = BODY.position + (chosen_dir * randf_range(MIN_WANDER_RANGE, MAX_WANDER_RANGE))
-		TASK_MANAGER.new_task(TASK_SEEK)
-	else:
-		print(name, " is resorting to wandering in a random direction")
-		var chosen_dir = Vector2.from_angle(randf_range(-PI, PI))
-		target_location = BODY.position + (chosen_dir * randf_range(MIN_WANDER_RANGE, MAX_WANDER_RANGE))
-		TASK_MANAGER.new_task(TASK_SEEK)
+	for mutation in mutations:
+		mutation.brain_think(self)

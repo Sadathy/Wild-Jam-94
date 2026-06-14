@@ -29,7 +29,7 @@ script = ExtResource("2_v6vig")
 [node name="TankNavigationRegion" type="NavigationRegion2D" parent="." unique_id=415584656]
 navigation_polygon = SubResource("NavigationPolygon_v6vig")
 
-[node name="Blob" parent="." unique_id=420744747 instance=ExtResource("2_0gq6p")]
+[node name="Blob" parent="." unique_id=420744747 groups=["blobs"] instance=ExtResource("2_0gq6p")]
 position = Vector2(-324, -187)
 
 [node name="InArena" type="Node2D" parent="." unique_id=1551744123]
@@ -95,9 +95,3 @@ rotation = 1.5707964
 [node name="Obstacle21" parent="Walls" unique_id=502714676 groups=["nav_group"] instance=ExtResource("5_vah2e")]
 position = Vector2(-52, 350)
 rotation = 1.5707964
-
-[node name="Blob2" parent="." unique_id=1960601162 instance=ExtResource("2_0gq6p")]
-position = Vector2(113, 137)
-
-[node name="Blob3" parent="." unique_id=1932634390 instance=ExtResource("2_0gq6p")]
-position = Vector2(302, -179)

@@ -10,15 +10,23 @@ var target_location: Vector2 = Vector2.ZERO
 
 @export var STATS: Dictionary = {
 	"boredom": 20,
-	"intelligence": 100,
-	"toughness": 50,
-	"strength": 45,
-	"speed": 100
+	"vigilance": 20,
+}
+
+var visible_objects: Dictionary = {
+	"food": [],
+	"blobs": [],
+	"obstacles": []
 }
 
 var current_boredom: float = 0
 var boredom_factor: float = 10
+
+var current_vigilance: float = 0
+var vigilance_factor: float = 10
+
 @export var BOREDOM_VARIANCE: float = 20
+@export var VIGILANCE_VARIANCE: float = 20
 
 @onready var eyes: Node2D = %Eyes
 
@@ -43,37 +51,58 @@ func on_finish_seek() -> void:
 
 func _physics_process(delta: float) -> void:
 	current_boredom += delta * boredom_factor
+	current_vigilance += delta * vigilance_factor
 	if current_boredom > STATS["boredom"]:
 		current_boredom -= STATS["boredom"]
 		boredom_factor = randf_range(BOREDOM_VARIANCE * 0.5, BOREDOM_VARIANCE * 1.5)
 		on_think()
-
+	if current_vigilance > STATS["vigilance"]:
+		current_vigilance -= STATS["vigilance"]
+		vigilance_factor = randf_range(VIGILANCE_VARIANCE * 0.5, VIGILANCE_VARIANCE * 1.5)
+		on_search()
+		
+# This updates the visible objects dictionary
+func on_search() -> void:
+	print("Searched for objects")
+	var visible = []
+	if eyes != null:
+		visible = eyes.get_visible_things()
+	else:
+		for key in visible_objects:
+			visible_objects[key] = []
+		return
+	var food = []
+	var blobs = []
+	var obstacles = []
+	
+	for thing in visible:
+		if thing.is_in_group("food"): food.append(thing)
+		if thing.is_in_group("blobs") and thing != BODY: blobs.append(thing)
+		if thing.is_in_group("nav_group"): obstacles.append(thing)
+	
+	visible_objects = {
+		"food": food,
+		"blobs": blobs,
+		"obstacles": obstacles
+	}
+	print("Found: ", visible_objects)
+			
 
 func on_think() -> void:
-	if TASK_MANAGER.current_task != TASK_IDLE:
-		return
-	
-	var visible = eyes.get_visible_things()
-	var food_options = []
-	var unblocked_options = []
-	
-	# Search our eye beams for any food
-	for thing in visible:
-		if thing.is_in_group("food"): food_options.append(thing)
-	
-	# If we found food, pick a random food and path towards it. Otherwise path in a random unblocked direction if we can.
-	if food_options.size() > 0:
+	# If we found food, pick a random food and path towards it. Otherwise, if we have found a blob path away from it. Otherwise path randomly.
+	if visible_objects["food"].size() > 0:
 		print("Found at least one food")
-		var chosen_food = food_options.pick_random()
+		var chosen_food = visible_objects["food"].pick_random()
 		target_location = chosen_food.position
 		TASK_MANAGER.new_task(TASK_SEEK)
-	elif unblocked_options.size() > 0:
-		print("Found an unblocked direction to wander in")
-		var chosen_dir = unblocked_options.pick_random()
+	elif visible_objects["blobs"].size() > 0:
+		print("Found at least one blob")
+		var chosen_blob = visible_objects["blobs"].pick_random()
+		var chosen_dir = (BODY.position - chosen_blob.position).normalized()
 		target_location = BODY.position + (chosen_dir * randf_range(MIN_WANDER_RANGE, MAX_WANDER_RANGE))
 		TASK_MANAGER.new_task(TASK_SEEK)
 	else:
-		print("Resorting to wandering in a blocked direction")
+		print("Resorting to wandering in a random direction")
 		var chosen_dir = Vector2.from_angle(randf_range(-PI, PI))
 		target_location = BODY.position + (chosen_dir * randf_range(MIN_WANDER_RANGE, MAX_WANDER_RANGE))
 		TASK_MANAGER.new_task(TASK_SEEK)

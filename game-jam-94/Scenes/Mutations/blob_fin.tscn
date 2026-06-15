@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dmxb63agwxykm"]
+
+[ext_resource type="Shader" uid="uid://l2kfdk5faie3" path="res://Resources/Shaders/blob_fin.gdshader" id="1_ariky"]
+[ext_resource type="Texture2D" uid="uid://dxaafurq1mngo" path="res://Assets/Blob/Blob_fin.png" id="1_v0cta"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w1dpb"]
+shader = ExtResource("1_ariky")
+shader_parameter/wave_frequency = 1.0990000522025
+shader_parameter/wave_speed = 0.5600000266
+shader_parameter/wave_amplitude = 0.025
+shader_parameter/colour_r = 0.60000000894072
+shader_parameter/colour_g = 0.5000000074506
+shader_parameter/colour_b = 0.80000001192096
+
+[node name="Blob_Fin" type="Node2D" unique_id=906984215]
+
+[node name="Blob_Fin" type="Sprite2D" parent="." unique_id=746313116]
+material = SubResource("ShaderMaterial_w1dpb")
+position = Vector2(2.9, 0)
+scale = Vector2(0.1219697, 0.1)
+texture = ExtResource("1_v0cta")

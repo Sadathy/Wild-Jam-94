@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://b3w6d5pi6qsde" path="res://Scripts/Blob/Tasks/blob_task_manager.gd" id="3_nqy3g"]
 [ext_resource type="Texture2D" uid="uid://c7fpegmiqk818" path="res://Assets/Blob/Blob_Base.png" id="3_oc1qy"]
 [ext_resource type="Script" uid="uid://bmhrpuyvewc4b" path="res://Scripts/Blob/blob_brain.gd" id="3_vofcw"]
-[ext_resource type="Shader" uid="uid://dhqggpc5lhqpe" path="res://Resources/Shaders/blob_tentacle.gdshader" id="4_6gmyd"]
+[ext_resource type="PackedScene" uid="uid://duklahau8y42m" path="res://Scenes/Mutations/blob_tentacle.tscn" id="4_6gmyd"]
 [ext_resource type="Script" uid="uid://d1fm7f671y7ll" path="res://Scripts/Blob/Tasks/task_seek.gd" id="5_2arvm"]
-[ext_resource type="Texture2D" uid="uid://xl5namfcv4q0" path="res://Assets/Blob/Blob_Tentacle.png" id="5_3sqwr"]
+[ext_resource type="PackedScene" uid="uid://dmxb63agwxykm" path="res://Scenes/Mutations/blob_fin.tscn" id="6_3sqwr"]
 [ext_resource type="Script" uid="uid://c4yit2v0mvm3r" path="res://Scripts/Blob/Tasks/task_idle.gd" id="6_h5kcp"]
 [ext_resource type="PackedScene" uid="uid://ce2525wmd1qdw" path="res://Scenes/Mutations/Eyes/eyes.tscn" id="7_b7hkt"]
 
@@ -24,15 +24,6 @@ shader_parameter/movement_activity = 2.000000095
 shader_parameter/colour_r = 0.40000000596048
 shader_parameter/colour_g = 0.40000000596048
 shader_parameter/colour_b = 0.80000001192096
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6gmyd"]
-shader = ExtResource("4_6gmyd")
-shader_parameter/wave_frequency = 20.0
-shader_parameter/wave_speed = 1.0
-shader_parameter/wave_amplitude = 0.05000000074506
-shader_parameter/colour_r = 0.40000000596048
-shader_parameter/colour_g = 0.60000000894072
-shader_parameter/colour_b = 0.20000000298024
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_148xd"]
 radius = 21.0
@@ -51,12 +42,26 @@ region_rect = Rect2(-125, -125, 750, 750)
 [node name="Tentacle_Pivot" type="Node2D" parent="Blob_Base" unique_id=1416103212]
 rotation = -6.2831855
 
-[node name="Blob_Tentacle" type="Sprite2D" parent="Blob_Base/Tentacle_Pivot" unique_id=549645347]
+[node name="Blob_Tentacle" parent="Blob_Base/Tentacle_Pivot" unique_id=1272147320 instance=ExtResource("4_6gmyd")]
 z_index = -1
-material = SubResource("ShaderMaterial_6gmyd")
-position = Vector2(0, -409.99997)
-scale = Vector2(1.2, 1.2)
-texture = ExtResource("5_3sqwr")
+position = Vector2(5.5950575e-05, -319.99997)
+
+[node name="Fin_Pivot" type="Node2D" parent="Blob_Base" unique_id=1260486161]
+position = Vector2(-119.999985, 39.999996)
+
+[node name="Blob_Fin" parent="Blob_Base/Fin_Pivot" unique_id=906984215 instance=ExtResource("6_3sqwr")]
+z_index = -1
+position = Vector2(-120.00003, 3.8146973e-06)
+scale = Vector2(9.999999, 9.999999)
+
+[node name="Fin_Pivot2" type="Node2D" parent="Blob_Base" unique_id=1079163570]
+position = Vector2(110, 40)
+
+[node name="Blob_Fin" parent="Blob_Base/Fin_Pivot2" unique_id=184606039 instance=ExtResource("6_3sqwr")]
+z_index = -1
+position = Vector2(120.00003, -9.536743e-07)
+rotation = 3.1415927
+scale = Vector2(9.999999, 9.999999)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=859144262]
 visible = false

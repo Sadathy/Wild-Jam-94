@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://duklahau8y42m"]
+
+[ext_resource type="Shader" uid="uid://dhqggpc5lhqpe" path="res://Resources/Shaders/blob_tentacle.gdshader" id="1_my2wl"]
+[ext_resource type="Texture2D" uid="uid://xl5namfcv4q0" path="res://Assets/Blob/Blob_Tentacle.png" id="2_sno5b"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uux56"]
+shader = ExtResource("1_my2wl")
+shader_parameter/wave_frequency = 20.0
+shader_parameter/wave_speed = 1.0
+shader_parameter/wave_amplitude = 0.05000000074506
+shader_parameter/colour_r = 0.70000001043084
+shader_parameter/colour_g = 0.5000000074506
+shader_parameter/colour_b = 0.60000000894072
+
+[node name="Blob_Tentacle" type="Node2D" unique_id=1272147320]
+
+[node name="Blob_Tentacle" type="Sprite2D" parent="." unique_id=1983200636]
+material = SubResource("ShaderMaterial_uux56")
+texture = ExtResource("2_sno5b")

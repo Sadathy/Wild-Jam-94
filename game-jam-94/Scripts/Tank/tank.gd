@@ -23,6 +23,8 @@ func _ready() -> void:
 	
 	tank_boundary.polygon = boundary_array
 	tank_boundary.uv = boundary_array
+	#pushed the z value of the background polygon back so we can see the mutations
+	tank_boundary.z_index = -2 
 	
 	tank_camera.MAX_X = MAX_X
 	tank_camera.MIN_Y = MIN_Y

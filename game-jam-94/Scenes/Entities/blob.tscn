@@ -11,15 +11,16 @@
 [ext_resource type="Script" uid="uid://c4yit2v0mvm3r" path="res://Scripts/Blob/Tasks/task_idle.gd" id="6_h5kcp"]
 [ext_resource type="PackedScene" uid="uid://ce2525wmd1qdw" path="res://Scenes/Mutations/Eyes/eyes.tscn" id="7_b7hkt"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6gmyd"]
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3sqwr"]
 shader = ExtResource("2_s6of7")
-shader_parameter/noise = SubResource("NoiseTexture2D_6gmyd")
-shader_parameter/wave_frequency = 20.0
-shader_parameter/wave_speed = 1.0000000475
-shader_parameter/wave_amplitude = 0.025
-shader_parameter/distortion_strength = 0.02
+shader_parameter/speed = 2.25200010697
+shader_parameter/cutoff = 0.15000000642648
+shader_parameter/smoothness = 0.0010000000475
+shader_parameter/fluid_cohesion = 16.198000531905002
+shader_parameter/number_of_blobs = 4
+shader_parameter/blob_velocity = Vector2(0, 0)
+shader_parameter/velocity_pull = 0.8
+shader_parameter/movement_activity = 2.000000095
 shader_parameter/colour_r = 0.40000000596048
 shader_parameter/colour_g = 0.40000000596048
 shader_parameter/colour_b = 0.80000001192096
@@ -28,7 +29,7 @@ shader_parameter/colour_b = 0.80000001192096
 shader = ExtResource("4_6gmyd")
 shader_parameter/wave_frequency = 20.0
 shader_parameter/wave_speed = 1.0
-shader_parameter/wave_amplitude = 0.025
+shader_parameter/wave_amplitude = 0.05000000074506
 shader_parameter/colour_r = 0.40000000596048
 shader_parameter/colour_g = 0.60000000894072
 shader_parameter/colour_b = 0.20000000298024
@@ -45,10 +46,10 @@ material = SubResource("ShaderMaterial_3sqwr")
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("3_oc1qy")
 region_enabled = true
-region_rect = Rect2(-50, -50, 600, 600)
+region_rect = Rect2(-125, -125, 750, 750)
 
 [node name="Tentacle_Pivot" type="Node2D" parent="Blob_Base" unique_id=1416103212]
-rotation = 6.2831855
+rotation = -6.2831855
 
 [node name="Blob_Tentacle" type="Sprite2D" parent="Blob_Base/Tentacle_Pivot" unique_id=549645347]
 z_index = -1
@@ -58,6 +59,7 @@ scale = Vector2(1.2, 1.2)
 texture = ExtResource("5_3sqwr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=859144262]
+visible = false
 shape = SubResource("CircleShape2D_148xd")
 
 [node name="Blob_Brain" type="Node" parent="." unique_id=862591359 node_paths=PackedStringArray("TASK_SEEK", "TASK_IDLE", "BODY", "TASK_MANAGER")]

@@ -1,8 +1,6 @@
 shader_type canvas_item;
 
 uniform float speed : hint_range(0.0, 5.0) = 1.5;
-uniform float cutoff : hint_range(0.01, 1.0) = 0.1;
-uniform float smoothness : hint_range(0.001, 0.2) = 0.02;
 uniform float fluid_cohesion : hint_range(5.0, 30.0) = 14.0;
 uniform int number_of_blobs = 4;
 
@@ -31,7 +29,11 @@ void fragment() {
         float offset = float(i) * 23.45; 
 
 	//blob movement speeds up with blob's velocity. first brackets is stationary movement, second is when moving
-	float dynamic_time = (TIME * speed * 0.6) + (TIME * length(blob_velocity) * 4.0) + offset;
+	//float dynamic_time = (TIME * speed * 0.6) + (TIME * length(blob_velocity) * 4.0) + offset;
+	
+	float dynamic_time = (250.0 * speed * 0.6) + (10.0 * length(blob_velocity) * 4.0) + offset;
+
+	
 
 	//how far the blobs can go from the middle, first number is when its stationary, second when its moving
 	float radius = mix(0.2, 0.27, clamp(length(blob_velocity) * 3.0, 0.0, 1.0));
@@ -42,16 +44,15 @@ void fragment() {
             cos(dynamic_time * 0.5 + sin(dynamic_time * 0.8))
         ) * radius; 
 	
-	//pushes the blobs to create a trail the oposite way to where it's going
+	//pushes the blobs to create a push the oposite way to where it's going
  	vec2 final_pos = orbit - direction;
               
-        
 	// Each  blob is 30% smaller than the last
 	float blob_scale = 3.0 - (float(i) * 0.3); 
 	 base += exp(-length(uv - final_pos) * fluid_cohesion) * blob_scale;
     }
 
-    //make edges sharp
+    //makes edges sharp
     float mask = smoothstep(0.15, 0.17, base);
     
 	//colour controls

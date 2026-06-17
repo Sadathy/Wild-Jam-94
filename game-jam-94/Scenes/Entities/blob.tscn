@@ -14,8 +14,6 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3sqwr"]
 shader = ExtResource("2_s6of7")
 shader_parameter/speed = 2.25200010697
-shader_parameter/cutoff = 0.15000000642648
-shader_parameter/smoothness = 0.0010000000475
 shader_parameter/fluid_cohesion = 16.198000531905002
 shader_parameter/number_of_blobs = 4
 shader_parameter/blob_velocity = Vector2(0, 0)
@@ -40,7 +38,6 @@ region_enabled = true
 region_rect = Rect2(-125, -125, 750, 750)
 
 [node name="Tentacle_Pivot" type="Node2D" parent="Blob_Base" unique_id=1416103212]
-rotation = -6.2831855
 
 [node name="Blob_Tentacle" parent="Blob_Base/Tentacle_Pivot" unique_id=1272147320 instance=ExtResource("4_6gmyd")]
 z_index = -1

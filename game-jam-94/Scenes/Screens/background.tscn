@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://c5j2v4wfyfaxc"]
+
+[ext_resource type="Shader" uid="uid://bl40n5o3eg81m" path="res://Resources/Shaders/tank_background.gdshader" id="1_yl2w0"]
+[ext_resource type="Texture2D" uid="uid://cafb4hets7cqw" path="res://Assets/Tank/Background/Height_Map.png" id="2_mjd34"]
+
+[sub_resource type="Gradient" id="Gradient_yl2w0"]
+colors = PackedColorArray(0.6343349, 0.8053628, 0.96077377, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mjd34"]
+noise_type = 3
+seed = 1
+frequency = 0.0051
+fractal_octaves = 4
+fractal_lacunarity = 1.0
+fractal_gain = 0.6
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6hu81"]
+noise = SubResource("FastNoiseLite_mjd34")
+color_ramp = SubResource("Gradient_yl2w0")
+
+[sub_resource type="Gradient" id="Gradient_kru5u"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.6509804, 0.63529414, 0.5411765, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i1xqt"]
+gradient = SubResource("Gradient_kru5u")
+
+[sub_resource type="Gradient" id="Gradient_i1xqt"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.69562364, 0.7668612, 0.76947427, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jvwvx"]
+gradient = SubResource("Gradient_i1xqt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e6n0k"]
+shader = ExtResource("1_yl2w0")
+shader_parameter/blend_amount = 1.0
+shader_parameter/height_map_scale = 0.10000000149012
+shader_parameter/texture1 = SubResource("GradientTexture1D_i1xqt")
+shader_parameter/texture2 = SubResource("GradientTexture1D_jvwvx")
+shader_parameter/heightmap = ExtResource("2_mjd34")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_6hu81")
+
+[sub_resource type="Gradient" id="Gradient_4rv1b"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_w0bhj"]
+gradient = SubResource("Gradient_4rv1b")
+
+[node name="Background" type="Node2D" unique_id=906004517]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1056933484]
+material = SubResource("ShaderMaterial_e6n0k")
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 66.0
+offset_bottom = 66.0
+texture = SubResource("GradientTexture2D_w0bhj")
